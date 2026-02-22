@@ -1,0 +1,166 @@
+/* Full Art Cards Styling - v3.0.0 */
+/* Minimal, clean design that showcases the emoji background */
+
+/* Full Art card base - mostly blank/minimal */
+.card.full-art {
+    position: relative;
+    overflow: hidden;  /* Clip emoji overflow */
+    padding: 0;
+}
+
+/* EMOJI BACKGROUND - Large and prominent at 80px */
+.card.full-art .card-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 80px !important;
+    opacity: 0.6 !important; /* Visible but not overpowering */
+    z-index: 0;
+    pointer-events: none;
+    line-height: 1;
+}
+
+/* HIDE description only - keep card name visible */
+.card.full-art .card-description {
+    display: none !important;
+}
+
+/* COST - Small and minimal in corner */
+.card.full-art .card-cost {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    z-index: 10;
+    width: 20px !important;
+    height: 20px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    font-size: 11px !important;
+    font-weight: bold;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0;
+}
+
+/* STATS - Small and unobtrusive at bottom */
+.card.full-art .card-stats {
+    position: absolute !important;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex !important;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2px 8px;
+    border-radius: 10px;
+    backdrop-filter: blur(3px);
+}
+
+.card.full-art .card-stats .attack-stat,
+.card.full-art .card-stats .health-stat {
+    font-size: 11px !important;
+    font-weight: bold;
+    color: white;
+}
+
+/* INFO BUTTON - Keep functional but subtle */
+.card.full-art .card-info-btn {
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+}
+
+/* COLORED BORDERS based on card color */
+.card.full-art[data-color="colorless"] {
+    border: 2px solid #808080;
+    background: linear-gradient(135deg, rgba(128, 128, 128, 0.1), rgba(169, 169, 169, 0.1));
+}
+
+.card.full-art[data-color="crimson"] {
+    border: 2px solid #ff4444;
+    background: linear-gradient(135deg, rgba(195, 20, 50, 0.15), rgba(240, 147, 251, 0.1));
+}
+
+.card.full-art[data-color="azure"] {
+    border: 2px solid #4488ff;
+    background: linear-gradient(135deg, rgba(44, 83, 100, 0.15), rgba(32, 58, 67, 0.1));
+}
+
+.card.full-art[data-color="verdant"] {
+    border: 2px solid #44ff44;
+    background: linear-gradient(135deg, rgba(17, 153, 142, 0.15), rgba(56, 239, 125, 0.1));
+}
+
+.card.full-art[data-color="umbral"] {
+    border: 2px solid #9944ff;
+    background: linear-gradient(135deg, rgba(157, 80, 187, 0.15), rgba(110, 72, 170, 0.1));
+}
+
+/* Enhanced border glow on hover */
+.card.full-art[data-color="colorless"]:hover {
+    box-shadow: 0 0 15px rgba(128, 128, 128, 0.6);
+}
+
+.card.full-art[data-color="crimson"]:hover {
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.8);
+}
+
+.card.full-art[data-color="azure"]:hover {
+    box-shadow: 0 0 15px rgba(68, 136, 255, 0.8);
+}
+
+.card.full-art[data-color="verdant"]:hover {
+    box-shadow: 0 0 15px rgba(68, 255, 68, 0.8);
+}
+
+.card.full-art[data-color="umbral"]:hover {
+    box-shadow: 0 0 15px rgba(153, 68, 255, 0.8);
+}
+
+/* Subtle shimmer for premium feel (much subtler) */
+.card.full-art::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    animation: shimmer 4s infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Collection view - subtle highlight */
+#collectionGrid .card.full-art {
+    position: relative;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .card.full-art .card-image {
+        font-size: 80px !important;  /* Scale down on mobile */
+    }
+    
+    .card.full-art .card-stats {
+        gap: 6px;
+        padding: 2px 6px;
+    }
+}

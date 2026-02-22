@@ -1,0 +1,27 @@
+/* ========================================================================
+   HAND SCROLL FIX - ONLY add scrollbar, don't touch sizing
+   ======================================================================== */
+
+/* Add vertical scrollbar to player hand - NOTHING ELSE */
+#playerHand {
+    overflow-y: auto !important;
+}
+
+/* Style the scrollbar */
+#playerHand::-webkit-scrollbar {
+    width: 8px;
+}
+
+#playerHand::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+#playerHand::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 4px;
+}
+
+#playerHand::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+}

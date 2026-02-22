@@ -1,0 +1,55 @@
+/* Card Ability Display Enhancement */
+/* This ensures abilities are always visible and readable */
+
+.card-description {
+    font-size: 10px !important;  /* Increased from 8px */
+    text-align: center !important;
+    color: #fff !important;  /* Pure white for better visibility */
+    margin-top: 3px !important;
+    line-height: 1.3 !important;
+    font-weight: 600 !important;  /* Make it bolder */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8) !important;  /* Add shadow for readability */
+    min-height: 16px !important;  /* Ensure space for text */
+    padding: 2px !important;
+    background: rgba(0, 0, 0, 0.4) !important;  /* Dark background for contrast */
+    border-radius: 3px !important;
+    display: block !important;  /* Ensure it's displayed */
+}
+
+/* For creature cards specifically */
+.card.creature .card-description {
+    margin-bottom: 3px !important;
+}
+
+/* For spell cards */
+.card.spell .card-description {
+    font-size: 11px !important;  /* Slightly larger for spells */
+    padding: 3px !important;
+}
+
+/* Hover effect for better readability */
+.card:hover .card-description {
+    font-size: 12px !important;
+    background: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Make legendary/epic/rare cards' abilities stand out */
+.card.legendary .card-description {
+    color: #ffd700 !important;
+    font-weight: bold !important;
+}
+
+.card.epic .card-description {
+    color: #e3b3ff !important;
+    font-weight: bold !important;
+}
+
+.card.rare .card-description {
+    color: #66ffff !important;
+    font-weight: bold !important;
+}
+
+/* Debug - Add border to see if element exists */
+.debug-abilities .card-description {
+    border: 1px solid red !important;
+}

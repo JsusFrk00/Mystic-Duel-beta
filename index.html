@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystic Duel - Strategic TCG with Multiplayer</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/ability-display.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/trading.css">
+    <link rel="stylesheet" href="css/full-art.css">
+    <link rel="stylesheet" href="css/hand-scroll.css">
+    <link rel="stylesheet" href="css/search-bar-fix.css">
+    
+    <!-- Add Socket.io for multiplayer -->
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    
+    <!-- v3.0.0 Security: Load config first, then API client -->
+    <script src="js/config.js"></script>
+    <script src="js/utils/api-client.js"></script>
+</head>
+<body>
+    <!-- Main Menu -->
+    <div class="main-menu" id="mainMenu" style="display: flex;">
+        <h1>🎴 Mystic Duel 🎴</h1>
+        
+        <!-- Local Mode Warning Banner -->
+        <div id="localModeWarning" style="display: none; width: 100%; background: linear-gradient(135deg, #ff9800, #f57c00); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center; border: 2px solid #ffa726; box-shadow: 0 4px 8px rgba(0,0,0,0.3);">
+            <div style="font-weight: bold; font-size: 1.1em; margin-bottom: 8px;">⚠️ Local Mode Active</div>
+            <div style="font-size: 0.9em; margin-bottom: 10px; opacity: 0.95;">Your progress is stored locally only. Multiplayer disabled.</div>
+            <button onclick="showSecureModeUpgrade()" style="background: white; color: #f57c00; padding: 8px 20px; border: none; border-radius: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">🔒 Upgrade to Secure Mode</button>
+        </div>
+        
+        <div class="currency-display">
+            <div class="currency-item">
+                <span class="gold-icon">🪙</span>
+                <span id="goldAmount">0</span>
+            </div>
+            <div class="currency-item">
+                <span class="gem-icon">💎</span>
+                <span id="gemAmount">0</span>
+            </div>
+        </div>
+        
+        <div class="menu-buttons">
+            <button onclick="if(window.deckbuilder && window.deckbuilder.show) { window.deckbuilder.show(); } else { window.showDeckbuilderLoadingModal(); }">🔨 Build Deck</button>
+            <button onclick="gameManager.startQuickGame()">⚡ Quick Play</button>
+            <button onclick="ui.showMultiplayer()">🌐 Multiplayer</button>
+            <button onclick="store.show()">🛒 Card Store</button>
+            <button onclick="if(window.tradingBlock && window.tradingBlock.show) { window.tradingBlock.show(); } else { window.showTradingBlockLoading(); }">🏪 Trading Block</button>
+            <button onclick="collection.show()">📚 My Collection</button>
+            <button onclick="deckbuilder.loadSavedDecks()">💾 Saved Decks</button>
+            <button onclick="ui.showGameStatistics()">📊 Game Statistics</button>
+            <button onclick="ui.toggleDifficultyMode()" id="difficultyToggleBtn">⚙️ Dynamic Difficulty: ON</button>
+            <button onclick="ui.showGameHelp()">❓ How to Play</button>
+        </div>
+        
+        <!-- Multiplayer Section -->
+        <div class="multiplayer-section" id="multiplayerSection" style="display: none;">
+            <h3>🌐 Multiplayer</h3>
+            <div class="connection-status" id="connectionStatus">
+                <span class="status-indicator disconnected" id="statusIndicator">🔴</span>
+                <span id="statusText">Disconnected</span>
+            </div>
+            
+            <div class="multiplayer-buttons" id="multiplayerButtons">
+                <button onclick="multiplayer.connect()" id="connectBtn">Connect to Server</button>
+                <button onclick="multiplayer.findMatch()" id="findMatchBtn" disabled>⚡ Find Match</button>
+                <button onclick="multiplayer.showRoomDialog()" id="createRoomBtn" disabled>🏠 Private Room</button>
+                <button onclick="ui.showMainMenu()" class="back-btn">⬅️ Back to Main Menu</button>
+            </div>
+            
+            <div class="room-info" id="roomInfo" style="display: none;">
+                <h4>Room Information</h4>
+                <p id="roomInfoText">-</p>
+                <button onclick="multiplayer.leaveRoom()" id="leaveRoomBtn">Leave Room</button>
+            </div>
+        </div>
+        
+        <div class="saved-decks" id="savedDecks" style="display: none;">
+            <h3>Saved Decks</h3>
+            <div id="savedDecksList"></div>
+        </div>
+        
+        <div class="daily-reward" id="dailyReward" onclick="ui.claimDailyReward()">
+            🎁 Daily Reward
+        </div>
+    </div>
+
+    <!-- Store -->
+    <div class="store-container" id="storeContainer">
+        <div class="store-header">
+            <h2>🛒 Card Store</h2>
+            <div class="currency-display">
+                <div class="currency-item">
+                    <span class="gold-icon">🪙</span>
+                    <span id="storeGoldAmount">0</span>
+                </div>
+                <div class="currency-item">
+                    <span class="gem-icon">💎</span>
+                    <span id="storeGemAmount">0</span>
+                </div>
+                <button onclick="ui.showMainMenu()">🏠 Menu</button>
+            </div>
+        </div>
+        
+        <div class="store-tabs">
+            <button class="store-tab active" onclick="store.showTab('packs')">Card Packs</button>
+            <button class="store-tab" onclick="store.showTab('singles')">Single Cards</button>
+            <button class="store-tab" onclick="store.showTab('used')">🏷️ Used Cards</button>
+            <button class="store-tab" onclick="store.showTab('deals')">Special Deals</button>
+        </div>
+        
+        <div class="store-content" id="storeContent"></div>
+    </div>
+
+    <!-- Trading Block -->
+    <div class="trading-block-container" id="tradingBlockContainer" style="display: none;">
+        <div class="trading-header">
+            <h2>🏪 Trading Block</h2>
+            <div class="currency-display">
+                <div class="currency-item">
+                    <span class="gold-icon">🪙</span>
+                    <span id="tradingGoldAmount">0</span>
+                </div>
+                <div class="currency-item">
+                    <span class="gem-icon">💎</span>
+                    <span id="tradingGemAmount">0</span>
+                </div>
+                <button onclick="tradingBlock.hide()">🏠 Menu</button>
+            </div>
+        </div>
+
+        <div class="trading-tabs">
+            <button class="trading-tab active" data-tab="browse" onclick="tradingBlock.showTab('browse')">📋 Browse Listings</button>
+            <button class="trading-tab" data-tab="myListings" onclick="tradingBlock.showTab('myListings')">📝 My Listings</button>
+            <button class="trading-tab" data-tab="myOffers" onclick="tradingBlock.showTab('myOffers')">💬 My Offers</button>
+            <button class="trading-tab" data-tab="create" onclick="tradingBlock.showTab('create')">➕ Create Listing</button>
+            <button class="trading-tab" data-tab="history" onclick="tradingBlock.showTab('history')">📜 History</button>
+        </div>
+
+        <div class="trading-content" id="tradingContent">
+            <!-- Content rendered by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Collection -->
+    <div class="collection-container" id="collectionContainer">
+        <div class="collection-header">
+            <h2>📚 My Collection</h2>
+            <div class="collection-stats">
+                <span>Total Cards: <span id="totalCardsOwned">0</span> / <span id="totalCardsAvailable">0</span></span>
+                <span>Unique: <span id="uniqueCardsOwned">0</span></span>
+            </div>
+            <button id="selectCardsBtn" onclick="collection.toggleSelectionMode()" style="display: none; padding: 10px 20px; background: linear-gradient(135deg, #667eea, #764ba2); border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; margin-right: 10px;">☑️ Select Cards to Sell</button>
+            <button onclick="ui.showMainMenu()">🏠 Menu</button>
+        </div>
+        
+        <!-- Search Bar -->
+        <div style="margin: 15px 0; padding: 0 20px;">
+            <input type="text" 
+                   id="collectionSearchInput" 
+                   placeholder="🔍 Search by card name or ability..." 
+                   oninput="collection.handleSearch(this.value)"
+                   style="width: 100%; padding: 12px 20px; font-size: 16px; border: 2px solid rgba(255,255,255,0.2); border-radius: 25px; background: rgba(0,0,0,0.3); color: white; outline: none; transition: all 0.3s;" 
+                   onfocus="this.style.borderColor='rgba(102, 126, 234, 0.8)'; this.style.background='rgba(0,0,0,0.5)'"
+                   onblur="this.style.borderColor='rgba(255,255,255,0.2)'; this.style.background='rgba(0,0,0,0.3)'">
+        </div>
+        
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="collection.filter('all')">All</button>
+            <button class="filter-btn" onclick="collection.filter('owned')">Owned</button>
+            <button class="filter-btn" onclick="collection.filter('creature')">Creatures</button>
+            <button class="filter-btn" onclick="collection.filter('spell')">Spells</button>
+            <button class="filter-btn" onclick="collection.filter('legendary')">Legendary</button>
+            <button class="filter-btn" onclick="collection.filter('epic')">Epic</button>
+            <button class="filter-btn" onclick="collection.filter('rare')">Rare</button>
+            <button class="filter-btn" onclick="collection.filter('common')">Common</button>
+        </div>
+        <div class="filter-buttons" style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+            <span style="font-size: 12px; opacity: 0.7; margin-right: 10px;">🎨 Filter by Color:</span>
+            <button class="filter-btn color-filter" onclick="collection.filter('crimson')">🔴 Crimson</button>
+            <button class="filter-btn color-filter" onclick="collection.filter('azure')">🔵 Azure</button>
+            <button class="filter-btn color-filter" onclick="collection.filter('verdant')">🟢 Verdant</button>
+            <button class="filter-btn color-filter" onclick="collection.filter('umbral')">🟣 Umbral</button>
+            <button class="filter-btn color-filter" onclick="collection.filter('colorless')">⚪ Colorless</button>
+            <button class="filter-btn color-filter" onclick="collection.filter('splash')">✨ Splash</button>
+        </div>
+        
+        <div class="card-grid" id="collectionGrid"></div>
+    </div>
+
+    <!-- Pack Opening Animation -->
+    <div class="pack-opening" id="packOpening">
+        <div class="pack-opening-content">
+            <div class="pack-animation" id="packAnimation">📦</div>
+            <button onclick="store.openPack()" id="openPackBtn">Click to Open!</button>
+            <div class="revealed-cards" id="revealedCards"></div>
+            <button onclick="store.closePack()" id="closePackBtn" style="display: none;">Continue</button>
+        </div>
+    </div>
+
+    <!-- Deckbuilder -->
+    <div class="deckbuilder-container" id="deckbuilder">
+        <div class="deckbuilder-header">
+            <h2>Deck Builder</h2>
+            <div class="deck-stats">
+                <span>Cards: <span id="deckCount">0</span>/30</span>
+                <input type="text" id="deckName" placeholder="Deck Name" style="padding: 5px; border-radius: 5px;">
+                <button onclick="deckbuilder.saveDeck()">💾 Save Deck</button>
+                <button onclick="gameManager.startGameWithDeck()">▶️ Play</button>
+                <button onclick="ui.showMainMenu()">🏠 Menu</button>
+            </div>
+        </div>
+        
+        <div class="collection-area">
+            <div class="card-collection">
+                <!-- Search Bar -->
+                <div style="margin: 15px 0; padding: 0 10px;">
+                    <input type="text" 
+                           id="deckbuilderSearchInput" 
+                           placeholder="🔍 Search by card name or ability..." 
+                           oninput="deckbuilder.handleSearch(this.value)"
+                           style="width: 100%; padding: 12px 20px; font-size: 16px; border: 2px solid rgba(255,255,255,0.2); border-radius: 25px; background: rgba(0,0,0,0.3); color: white; outline: none; transition: all 0.3s;" 
+                           onfocus="this.style.borderColor='rgba(102, 126, 234, 0.8)'; this.style.background='rgba(0,0,0,0.5)'"
+                           onblur="this.style.borderColor='rgba(255,255,255,0.2)'; this.style.background='rgba(0,0,0,0.3)'">
+                </div>
+                
+                <div class="filter-buttons">
+                    <button class="filter-btn active" onclick="deckbuilder.filterCards('all')">All</button>
+                    <button class="filter-btn" onclick="deckbuilder.filterCards('owned')">Owned Only</button>
+                    <button class="filter-btn" onclick="deckbuilder.filterCards('creature')">Creatures</button>
+                    <button class="filter-btn" onclick="deckbuilder.filterCards('spell')">Spells</button>
+                    <button class="filter-btn" onclick="deckbuilder.filterCards('legendary')">Legendary</button>
+                    <button class="filter-btn" onclick="deckbuilder.filterCards('epic')">Epic</button>
+                    <button class="filter-btn" onclick="deckbuilder.filterCards('rare')">Rare</button>
+                    <button class="filter-btn" onclick="deckbuilder.filterCards('common')">Common</button>
+                </div>
+                <div class="filter-buttons" style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <span style="font-size: 12px; opacity: 0.7; margin-right: 10px;">Sort by:</span>
+                    <button class="filter-btn sort-btn active" onclick="deckbuilder.setSorting('rarity')">Rarity</button>
+                    <button class="filter-btn sort-btn" onclick="deckbuilder.setSorting('cost')">Mana Cost</button>
+                    <button class="filter-btn sort-btn" onclick="deckbuilder.setSorting('name')">Name</button>
+                </div>
+                <div class="filter-buttons" style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
+                    <span style="font-size: 12px; opacity: 0.7; margin-right: 10px;">🎨 Filter by Color:</span>
+                    <button class="filter-btn color-filter" onclick="deckbuilder.filterCards('crimson')">🔴 Crimson</button>
+                    <button class="filter-btn color-filter" onclick="deckbuilder.filterCards('azure')">🔵 Azure</button>
+                    <button class="filter-btn color-filter" onclick="deckbuilder.filterCards('verdant')">🟢 Verdant</button>
+                    <button class="filter-btn color-filter" onclick="deckbuilder.filterCards('umbral')">🟣 Umbral</button>
+                    <button class="filter-btn color-filter" onclick="deckbuilder.filterCards('colorless')">⚪ Colorless</button>
+                    <button class="filter-btn color-filter" onclick="deckbuilder.filterCards('splash')">✨ Splash</button>
+                </div>
+                <div class="card-grid" id="cardCollection"></div>
+            </div>
+            
+            <div class="current-deck">
+                <h3>Current Deck</h3>
+                <div class="mana-curve" id="manaCurve"></div>
+                <div class="deck-list" id="currentDeckList"></div>
+                <button onclick="deckbuilder.clearDeck()">Clear Deck</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game -->
+    <div class="game-container" id="gameContainer">
+        <div class="turn-indicator" id="turnIndicator">Your Turn</div>
+        
+        <!-- AI Player Area -->
+        <div class="player-area">
+            <div class="player-info">
+                <h3>AI Opponent</h3>
+                <div class="health-bar">
+                    <div class="health-fill" id="aiHealthBar" style="width: 100%"></div>
+                    <div class="health-text" id="aiHealthText">30/30</div>
+                </div>
+                <div class="mana-display" id="aiMana"></div>
+                <div>Cards: <span id="aiCardCount">5</span></div>
+            </div>
+            <div class="card-zone">
+                <div class="hand-area" id="aiHand">
+                    <div style="color: rgba(255,255,255,0.5)">AI's Hand (Hidden)</div>
+                </div>
+                <div class="field-area" id="aiField"></div>
+            </div>
+        </div>
+
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <button onclick="game.endTurn()" id="endTurnBtn">End Turn</button>
+            <button onclick="game.restart()">Restart</button>
+            <button onclick="ui.showMainMenu()">Menu</button>
+        </div>
+
+        <!-- Player Area -->
+        <div class="player-area">
+            <div class="player-info">
+                <h3>You</h3>
+                <div class="health-bar">
+                    <div class="health-fill" id="playerHealthBar" style="width: 100%"></div>
+                    <div class="health-text" id="playerHealthText">30/30</div>
+                </div>
+                <div class="mana-display" id="playerMana"></div>
+                <div>Deck: <span id="playerDeckCount">15</span></div>
+            </div>
+            <div class="card-zone">
+                <div class="field-area" id="playerField"></div>
+                <div class="hand-area" id="playerHand"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-log" id="gameLog" style="display: none;"></div>
+
+    <div class="winner-screen" id="winnerScreen">
+        <div class="winner-content">
+            <h1 id="winnerText">Victory!</h1>
+            <p id="winnerMessage">Congratulations on your strategic prowess!</p>
+            <div class="reward-display" id="rewardDisplay">
+                <h3>Rewards Earned:</h3>
+                <p id="rewardText"></p>
+            </div>
+            <button onclick="game.restart()">Play Again</button>
+            <button onclick="ui.showMainMenu()">Main Menu</button>
+        </div>
+    </div>
+
+    <!-- Debug Mode -->
+    <div class="debug-mode" id="debugMode" style="display: none;">
+        <div class="debug-panel">
+            <h2>🔧 Debug Mode</h2>
+            <div class="debug-section">
+                <h3>Game State</h3>
+                <label>Player Health: <input type="number" id="debugPlayerHealth" value="30" max="30"></label>
+                <label>AI Health: <input type="number" id="debugAiHealth" value="30" max="30"></label>
+                <label>Player Mana: <input type="number" id="debugPlayerMana" value="10" max="10"></label>
+                <label>AI Mana: <input type="number" id="debugAiMana" value="10" max="10"></label>
+            </div>
+            
+            <div class="debug-section">
+                <h3>Add Cards to Player Hand</h3>
+                <select id="debugCardSelect" style="width: 200px; padding: 5px;">
+                    <option value="">Select a card...</option>
+                </select>
+                <button onclick="debugMode.addCard('hand')">Add to Hand</button>
+                <button onclick="debugMode.addCard('field')">Add to Field</button>
+            </div>
+            
+            <div class="debug-section">
+                <h3>Add Cards to AI</h3>
+                <button onclick="debugMode.addCard('aiField')">Add to AI Field</button>
+            </div>
+            
+            <div class="debug-section">
+                <h3>Current Debug Setup</h3>
+                <div id="debugSetup" style="max-height: 200px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px;">
+                    <div>Player Hand: <span id="debugPlayerHandList">Empty</span></div>
+                    <div>Player Field: <span id="debugPlayerFieldList">Empty</span></div>
+                    <div>AI Field: <span id="debugAiFieldList">Empty</span></div>
+                </div>
+            </div>
+            
+            <div class="debug-actions">
+                <button onclick="debugMode.startGame()">Start Debug Game</button>
+                <button onclick="debugMode.clear()">Clear Setup</button>
+                <button onclick="debugMode.close()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deck Selection Modal -->
+    <div class="modal-overlay" id="deckSelectionModal" style="display: none;">
+        <div class="modal-content deck-selection">
+            <h2>Choose Your Deck</h2>
+            <div class="deck-selection-timer">
+                <span>Time remaining: <span id="deckSelectionTimer">30</span>s</span>
+            </div>
+            
+            <div class="deck-selection-status">
+                <div class="player-status">
+                    <span>You: </span>
+                    <span id="yourDeckStatus">Selecting...</span>
+                </div>
+                <div class="player-status">
+                    <span>Opponent: </span>
+                    <span id="opponentDeckStatus">Selecting...</span>
+                </div>
+            </div>
+            
+            <div class="saved-decks-grid" id="deckSelectionGrid">
+                <!-- Saved decks will be populated here -->
+            </div>
+            
+            <div class="deck-selection-buttons">
+                <button onclick="multiplayer.selectRandomDeck()" class="random-deck-btn">🎲 Use Random Deck</button>
+                <button onclick="multiplayer.cancelDeckSelection()" class="cancel-btn">Cancel Match</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Multiplayer Modal Dialogs -->
+    <div class="modal-overlay" id="roomModal" style="display: none;">
+        <div class="modal-content">
+            <h3>Private Room</h3>
+            <div class="room-options">
+                <button onclick="multiplayer.createRoom()">Create New Room</button>
+                <div class="room-join">
+                    <input type="text" id="roomIdInput" placeholder="Enter Room ID" maxlength="20">
+                    <button onclick="multiplayer.joinRoom()">Join Room</button>
+                </div>
+            </div>
+            <button onclick="multiplayer.closeRoomDialog()">Cancel</button>
+        </div>
+    </div>
+    
+    <div class="matchmaking-overlay" id="matchmakingOverlay" style="display: none;">
+        <div class="matchmaking-content">
+            <div class="spinner">⏳</div>
+            <h3 id="matchmakingText">Looking for opponent...</h3>
+            <p id="matchmakingSubtext">Please wait while we find you a match</p>
+            <button onclick="multiplayer.cancelMatchmaking()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Load all JavaScript modules as regular scripts (dependency order matters) -->
+    <!-- CRITICAL: Load API Client FIRST for v3.0.0 -->
+    <script src="js/utils/api-client.js"></script>
+    <!-- Load NetworkManager fix -->
+    <script src="js/network-immediate-fix.js"></script>
+    <script src="js/data/abilities.js"></script>
+    <script src="js/data/cards.js"></script>
+    <script src="js/game/Card.js"></script>
+    <script src="js/game/splash-handler.js"></script>
+    <script src="js/utils/card-text-abbreviator.js"></script>
+    <script src="js/utils/card-display-utils.js"></script>
+    <script src="js/v3-init.js"></script>
+    <script src="js/utils/storage.js"></script>
+    <script src="js/game/Game.js"></script>
+    <script src="js/game/spell-shield-property-fix.js"></script>
+    <!-- CRITICAL: Patch Game.js handleSpell BEFORE v3-abilities loads -->
+    <script src="js/game/gamejs-handlespell-PATCH.js"></script>
+    <!-- MODULAR ABILITY SYSTEM - Event-driven architecture -->
+    <script src="js/game/ability-system-modular.js"></script>
+    <!-- V3.0 Complete Abilities System -->
+    <script src="js/game/v3-abilities-complete.js"></script>
+    <script src="js/game/v3-abilities-part2.js"></script>
+    <script src="js/game/v3-abilities-part3.js"></script>
+    <script src="js/game/v3-1-4-ability-fixes.js"></script>
+    <script src="js/game/v3-1-4-comprehensive-fixes.js"></script>
+    <!-- Splash Bonus CORRECTED - Applies splash bonuses when cards are splashed -->
+    <script src="js/game/splash-bonus-CORRECTED.js"></script>
+    <!-- Multi-Color & Splash 2 CORRECTED - Fixes both systems -->
+    <script src="js/game/multicolor-splash2-CORRECTED.js"></script>
+    <!-- Attack Trigger Variable CORRECTED - Fixes player/attackingPlayer mismatch -->
+    <script src="js/game/attack-trigger-variable-CORRECTED.js"></script>
+    <script src="js/fix-deathrattle-abilities.js"></script>
+    <!-- V3 Abilities Critical Fixes - MUST LOAD LAST to fix all v3 patches -->
+    <script src="js/game/v3-abilities-critical-fixes.js"></script>
+    <!-- Check Deaths Fix - Prevents tokens from being lost during filter() -->
+    <script src="js/game/checkDeaths-deathrattle-fix.js"></script>
+    <!-- Phoenix Resurrect CORRECTED - Fixed early return blocking Resurrect -->
+    <script src="js/game/phoenix-resurrect-CORRECTED.js"></script>
+    <!-- Rat Deathrattle CORRECTED - Fixed the "counting itself" bug -->
+    <script src="js/game/rat-deathrattle-CORRECTED.js"></script>
+    <!-- Necrolord Deathrattle CORRECTED - Uses pending tokens for mass summon -->
+    <script src="js/game/necrolord-deathrattle-CORRECTED.js"></script>
+    <!-- Permanent Buff CORRECTED - Buffs persist through end of turn -->
+    <script src="js/game/permanent-buff-CORRECTED.js"></script>
+    <!-- Time Warp Extra Turn CORRECTED - Fixes includes() check MUST LOAD FIRST -->
+    <script src="js/game/time-warp-extra-turn-CORRECTED.js"></script>
+    <!-- Time Warp Restriction CORRECTED - Prevents Time Warp chaining -->
+    <script src="js/game/time-warp-restriction-CORRECTED.js"></script>
+    <!-- Whale Shark Can't Attack CORRECTED - Explicit cantAttack flag -->
+    <script src="js/game/whale-shark-cantattack-CORRECTED.js"></script>
+    <!-- Search Bar Feature - Search by name and ability in Collection and Deck Builder -->
+    <script src="js/utils/search-bar-feature.js"></script>
+    <!-- Trample Fix - Comprehensive implementation for all Trample cases -->
+    <script src="js/game/trample-fix.js"></script>
+    <!-- Archmage Solarius Fix - Double spell damage aura -->
+    <script src="js/game/archmage-solarius-fix.js"></script>
+    <!-- The Nexus Fix - Multi-color identity + cost reduction -->
+    <script src="js/game/the-nexus-fix.js"></script>
+    <!-- Unlimited Hand Size Fix - Azure Infinity + Dream Weaver -->
+    <script src="js/game/unlimited-hand-size-fix.js"></script>
+    <script src="js/game/game-card-text-fix.js"></script>
+    <script src="js/game/splash-integration.js"></script>
+    <script src="js/multiplayer/MultiplayerGame.js"></script>
+    <script src="js/multiplayer-card-sync-fix.js"></script>
+    <script src="js/web-client-immediate-fix.js"></script>
+    <script src="js/ui/ui.js"></script>
+    <script src="js/store/store.js"></script>
+    <script src="js/store/collection.js"></script>
+    <script src="deckbuilder-minimal.js"></script>
+    <script src="js/deckbuilder/deckbuilder.js"></script>
+    <script src="js/deckbuilder/deckbuilder-fixed.js"></script>
+    <!-- Splash Deck Building CORRECTED - Allow splash cards in main color decks -->
+    <script src="js/utils/splash-deckbuilding-CORRECTED.js"></script>
+    <script src="js/debug/debug.js"></script>
+    <script src="js/debug/debug-property-fix.js"></script>
+    <!-- Debug Ability Init Fix - Makes keyword flags work in debug mode -->
+    <script src="js/debug/debug-ability-init-fix.js"></script>
+    <script src="js/multiplayer/NetworkManager.js"></script>
+    <script src="js/multiplayer/NetworkManager-patch.js"></script>
+    <script src="js/multiplayer/MultiplayerManager.js"></script>
+    <script src="js/developer-mode.js"></script>
+    
+    <!-- Load Trading Block BEFORE main-secure.js so it's available immediately -->
+    <script src="js/trading/trading-block-fixed.js"></script>
+    
+    <script src="js/main-secure.js"></script>
+    <script src="js/fix-storage.js"></script>
+    <script src="js/stats-reset-fix.js"></script>
+    <script src="js/diagnostics.js"></script>
+    <script src="debug-test.js"></script>
+    
+    <!-- Global function for card info (needed by onclick handlers) -->
+    <script>
+        // CRITICAL: Suppress ALL native Electron error dialogs
+        window.addEventListener('error', function(e) {
+            e.preventDefault();
+            console.error('[Global Error Caught]:', e.error);
+        });
+        
+        window.addEventListener('unhandledrejection', function(e) {
+            e.preventDefault();
+            console.error('[Global Promise Rejection]:', e.reason);
+            
+            // Show custom error for fetch failures
+            if (e.reason && (e.reason.message || '').includes('fetch')) {
+                console.log('[Error Handler] Fetch error detected, showing custom modal');
+            }
+        });
+        
+        window.showCardInfo = function(event, card) {
+            if (window.ui && window.ui.showCardInfo) {
+                window.ui.showCardInfo(event, card);
+            } else {
+                console.log('Card info:', card);
+            }
+        };
+        
+        // Global helper for Trading Block loading modal
+        window.showTradingBlockLoading = function() {
+            console.log('[DEBUG] showTradingBlockLoading called');
+            console.log('[DEBUG] window.tradingBlock:', window.tradingBlock);
+            console.log('[DEBUG] typeof window.tradingBlock:', typeof window.tradingBlock);
+            
+            const modal = document.createElement('div');
+            modal.id = 'tradingLoadingModal';
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 9999;';
+            
+            modal.innerHTML = '<div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); max-width: 400px; width: 90%; color: #333; text-align: center;">' +
+                '<div style="font-size: 60px; margin-bottom: 20px;">⏳</div>' +
+                '<h2 style="color: #667eea; margin-bottom: 20px;">Trading Block Loading</h2>' +
+                '<p style="margin-bottom: 15px; line-height: 1.6;">Trading Block is loading, please try again in a moment.</p>' +
+                '<p style="margin-bottom: 25px; font-size: 0.85em; color: #666;">Status: ' + (window.tradingBlock ? 'Loaded' : 'Not Loaded') + '</p>' +
+                '<button id="closeTradingLoadingBtn" style="padding: 12px 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; font-size: 1em; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);">OK</button>' +
+                '</div>';
+            
+            document.body.appendChild(modal);
+            
+            document.getElementById('closeTradingLoadingBtn').onclick = function() {
+                document.getElementById('tradingLoadingModal').remove();
+            };
+        };
+    </script>
+    <script src="js/browser-card-fix-clean.js"></script>
+    <script src="js/fix-card-display.js"></script>
+    <script src="js/ability-fix-direct.js"></script>
+    <script src="js/fix-card-abilities.js"></script>
+    <script src="js/comprehensive-ability-fix.js"></script>
+    <script src="js/master-abilities-fix.js"></script>
+    <script src="js/abilities-diagnostic.js"></script>
+    
+    <!-- Deck Selection Test (remove after testing) -->
+    <script src="test-deck-selection.js"></script>
+    
+    <!-- v3.0.0 Runtime Patches - Apply last to patch all modules -->
+    <script src="js/v3-patches.js"></script>
+    <script src="js/v3-card-display-patch.js"></script>
+    
+    <!-- CRITICAL: Force card text abbreviation - MUST load last -->
+    <script src="js/FORCE-CARD-TEXT-FIX.js"></script>
+    <!-- CRITICAL: Spell Shield Fix - ABSOLUTELY MUST LOAD LAST -->
+    <script src="js/game/spell-shield-fix-FINAL.js"></script>
+    <!-- RUNTIME FIX: Cost Display - Loads absolutely last -->
+    <script src="js/game/runtime-cost-display-fix.js"></script>
+    
+    <!-- INLINE PATCH: Bypass all caching -->
+    <script>
+    // This runs inline in HTML so it CANNOT be cached
+    console.log('🔥 INLINE Cost Fix Running...');
+    
+    setTimeout(function() {
+        if (!window.Game || !window.Game.prototype) {
+            console.error('❌ No Game class!');
+            return;
+        }
+        
+        // STORE original
+        const _origCreateCard = window.Game.prototype.createCardElement;
+        
+        // REPLACE with cost-aware version
+        window.Game.prototype.createCardElement = function(card, isPlayer, onField) {
+            const el = _origCreateCard.call(this, card, isPlayer, onField);
+            
+            // Fix cost display for hand cards
+            if (!onField && isPlayer && this.calculateActualCost) {
+                const realCost = this.calculateActualCost(card, 'player');
+                if (realCost !== card.cost) {
+                    const costDiv = el.querySelector('.card-cost');
+                    if (costDiv) {
+                        costDiv.textContent = realCost;
+                        console.log('[INLINE FIX]', card.name + ':', card.cost, '→', realCost);
+                    }
+                }
+            }
+            
+            return el;
+        };
+        
+        console.log('✅ INLINE Cost Fix Applied!');
+        
+        // Force display update if game exists
+        if (window.game && window.game.updateDisplay) {
+            window.game.updateDisplay();
+        }
+    }, 500); // Wait for everything to load
+    </script>
+</body>
+</html>

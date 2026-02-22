@@ -1,0 +1,1851 @@
+/* ==================== Global Styles ==================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) fixed;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    color: white;
+    padding: 20px 0;
+    overflow-x: hidden;
+}
+
+/* ==================== Main Menu ==================== */
+.main-menu {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.main-menu[style*="display: none"] {
+    display: none !important;
+}
+
+.main-menu h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* ==================== Currency Display ==================== */
+.currency-display {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.currency-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.gold-icon {
+    color: #ffd700;
+}
+
+.gem-icon {
+    color: #e91e63;
+}
+
+/* ==================== Menu Buttons ==================== */
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 300px;
+    margin: 0 auto;
+    align-items: center;
+}
+
+.menu-buttons button {
+    width: 100%;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.menu-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ==================== Store Container ==================== */
+.store-container {
+    display: none;
+    width: 95%;
+    max-width: 1400px;
+    height: 90vh;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.store-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.store-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.store-tab {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.store-tab.active {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.store-content {
+    height: calc(100% - 120px);
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.store-refresh-info {
+    padding: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.refresh-timer {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* ==================== Packs Grid ==================== */
+.packs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.pack-card {
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.pack-card:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+}
+
+.pack-card.legendary-pack {
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+    border-color: #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.pack-card.epic-pack {
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    border-color: #8e2de2;
+}
+
+.pack-card.rare-pack {
+    background: linear-gradient(135deg, #00c9ff, #92fe9d);
+    border-color: #00c9ff;
+}
+
+.pack-icon {
+    font-size: 60px;
+    margin-bottom: 10px;
+}
+
+.pack-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.pack-description {
+    font-size: 12px;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.pack-price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* ==================== Singles Grid ==================== */
+.singles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.shop-card {
+    position: relative;
+}
+
+.card-price {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+
+.owned-badge {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #4CAF50;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* ==================== Collection Container ==================== */
+.collection-container {
+    display: none;
+    width: 95%;
+    max-width: 1400px;
+    height: 90vh;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    position: relative;
+}
+
+.collection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.collection-stats {
+    display: flex;
+    gap: 20px;
+}
+
+/* ==================== Pack Opening ==================== */
+.pack-opening {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.pack-opening-content {
+    text-align: center;
+}
+
+.pack-animation {
+    font-size: 120px;
+    animation: packShake 0.5s ease-in-out infinite;
+    margin-bottom: 30px;
+}
+
+@keyframes packShake {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+.revealed-cards {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.revealed-card {
+    animation: cardReveal 0.5s ease-out;
+}
+
+@keyframes cardReveal {
+    from {
+        transform: rotateY(90deg) scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: rotateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* ==================== Daily Reward ==================== */
+.daily-reward {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #f093fb, #f5576c);
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: pulse 2s infinite;
+}
+
+.daily-reward:hover {
+    transform: scale(1.05);
+}
+
+.daily-reward.claimed {
+    background: rgba(100, 100, 100, 0.5);
+    cursor: not-allowed;
+    animation: none;
+}
+
+/* ==================== Deckbuilder Container ==================== */
+.deckbuilder-container {
+    display: none;
+    width: 95%;
+    max-width: 1600px;
+    height: 90vh;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.deckbuilder-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.deck-stats {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.collection-area {
+    display: flex;
+    gap: 20px;
+    height: calc(100% - 60px);
+}
+
+.card-collection {
+    flex: 2;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 15px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-collection .card-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 5px 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn.active {
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 35px 10px; /* 35px row gap (increased from 10px), 10px column gap */
+    max-height: calc(90vh - 180px);
+    overflow-y: auto;
+    padding-right: 10px;
+    padding-bottom: 40px;  /* Ensure bottom row is visible */
+}
+
+.current-deck {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.deck-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.deck-card-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.deck-card-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.mana-curve {
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.mana-bar {
+    flex: 1;
+    background: linear-gradient(to top, #00bcd4, #03a9f4);
+    border-radius: 3px;
+    position: relative;
+}
+
+.mana-bar span {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+}
+
+/* ==================== Game Container ==================== */
+.game-container {
+    display: none;
+    width: 95%;
+    max-width: 1400px;
+    height: calc(100vh - 40px);
+    max-height: 900px;
+    min-height: 600px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    padding: 15px;
+    flex-direction: column;
+    gap: 10px;
+    backdrop-filter: blur(10px);
+    margin: auto;
+}
+
+.player-area {
+    flex: 1;
+    display: flex;
+    gap: 15px;
+    min-height: 0;
+    max-height: 40%;
+}
+
+.player-info {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 10px;
+    width: 180px;
+    min-width: 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    font-size: 14px;
+}
+
+.health-bar {
+    background: rgba(0, 0, 0, 0.3);
+    height: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+.health-fill {
+    background: linear-gradient(90deg, #4CAF50, #8BC34A);
+    height: 100%;
+    width: 100%;
+    transition: width 0.5s ease;
+}
+
+.health-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.mana-display {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.mana-crystal {
+    width: 25px;
+    height: 25px;
+    background: linear-gradient(135deg, #00bcd4, #03a9f4);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+}
+
+.mana-crystal.used {
+    background: rgba(100, 100, 100, 0.3);
+    box-shadow: none;
+}
+
+.card-zone {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.hand-area, .field-area {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    gap: 8px;
+    min-height: 120px;
+    max-height: 180px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.field-area {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* ==================== Card Styles ==================== */
+.card {
+    width: 100px;
+    height: 140px;
+    min-width: 100px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    border-radius: 8px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    flex-shrink: 0;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+.card.creature {
+    background: linear-gradient(135deg, #c31432, #240b36);
+}
+
+.card.spell {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+}
+
+.card.legendary {
+    background: linear-gradient(135deg, #f7971e, #ffd200);
+    border-color: #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.card.epic {
+    background: linear-gradient(135deg, #8e2de2, #4a00e0);
+    border-color: #8e2de2;
+}
+
+.card.rare {
+    background: linear-gradient(135deg, #00c9ff, #92fe9d);
+    border-color: #00c9ff;
+}
+
+.card.unowned {
+    opacity: 0.4;
+    filter: grayscale(0.5);
+}
+
+.card.playable {
+    border-color: #4CAF50 !important;
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.6) !important;
+}
+
+/* Playable state for legendaries - maintain yellow glow but add green tint */
+.card.legendary.playable {
+    border-color: #4CAF50 !important;
+    box-shadow: 0 0 25px rgba(76, 175, 80, 0.8), 
+                0 0 50px rgba(255, 215, 0, 0.3) !important;
+}
+
+.card.selected {
+    border-color: #FFC107;
+    box-shadow: 0 0 25px rgba(255, 193, 7, 0.8);
+    transform: scale(1.1);
+}
+
+.card.tapped {
+    transform: rotate(90deg);
+    opacity: 0.7;
+}
+
+.card.defending {
+    box-shadow: 0 0 15px rgba(0, 150, 255, 0.5);
+    border-color: #0096ff;
+}
+
+.card.defending::after {
+    content: "🛡️";
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 20px;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.card-name {
+    font-size: 10px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 3px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    line-height: 1.2;
+}
+
+/* v3.0: Dynamic font sizing for long card names */
+.card-name[data-name-length="short"] {
+    font-size: 10px;
+}
+
+.card-name[data-name-length="medium"] {
+    font-size: 9px;
+}
+
+.card-name[data-name-length="long"] {
+    font-size: 8px;
+    line-height: 1.1;
+}
+
+.card-name[data-name-length="very-long"] {
+    font-size: 7px;
+    line-height: 1.0;
+}
+
+.card-cost {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 25px;
+    height: 25px;
+    background: radial-gradient(circle, #00bcd4, #0288d1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card-info-btn {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s;
+}
+
+.card-info-btn:hover {
+    background: #fff;
+    transform: scale(1.2);
+}
+
+.ability-tooltip {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+    padding: 15px;
+    z-index: 1000;
+    max-width: 250px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: none;
+    pointer-events: none;
+}
+
+.ability-tooltip.show {
+    display: block;
+    pointer-events: auto;
+}
+
+.ability-tooltip h4 {
+    margin-bottom: 10px;
+    color: #fff;
+    font-size: 16px;
+}
+
+.ability-tooltip p {
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.ability-tooltip .ability-name {
+    color: #00bcd4;
+    font-weight: bold;
+}
+
+.ability-tooltip .rarity-info {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 12px;
+}
+
+.card-image {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 3px;
+}
+
+.card-stats {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.attack-stat {
+    background: rgba(255, 0, 0, 0.3);
+    padding: 2px 8px;
+    border-radius: 5px;
+}
+
+.health-stat {
+    background: rgba(0, 255, 0, 0.3);
+    padding: 2px 8px;
+    border-radius: 5px;
+}
+
+.card-description {
+    font-size: 8px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 3px;
+    line-height: 1.2;
+}
+
+/* ==================== Control Panel ==================== */
+.control-panel {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+button {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.turn-indicator {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    font-weight: bold;
+    padding: 8px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    animation: pulse 2s infinite;
+    z-index: 50;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* ==================== Game Log ==================== */
+.game-log {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 250px;
+    max-width: 30%;
+    max-height: 150px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 11px;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.game-log:hover {
+    pointer-events: auto;
+}
+
+.log-entry {
+    margin-bottom: 5px;
+    padding: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.damage-popup {
+    position: absolute;
+    color: #ff4444;
+    font-size: 24px;
+    font-weight: bold;
+    animation: damageFloat 1s ease-out forwards;
+    pointer-events: none;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes damageFloat {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+}
+
+/* ==================== Winner Screen ==================== */
+.winner-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.winner-content {
+    text-align: center;
+    padding: 40px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.winner-content h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.reward-display {
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.reward-display h3 {
+    margin-bottom: 10px;
+}
+
+/* ==================== Saved Decks ==================== */
+.saved-decks {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.saved-deck-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+}
+
+.deck-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.small-btn {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+/* ==================== Debug Mode ==================== */
+.debug-mode {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.debug-panel {
+    background: linear-gradient(135deg, #232526, #414345);
+    border: 2px solid #ff0000;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+}
+
+.debug-panel h2 {
+    color: #ff0000;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.debug-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.debug-section h3 {
+    margin-bottom: 10px;
+    color: #ffd700;
+}
+
+.debug-section label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.debug-section input {
+    width: 60px;
+    padding: 3px;
+    margin-left: 10px;
+}
+
+.debug-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.debug-trigger {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+    cursor: default;
+}
+
+/* ==================== Responsive Design ==================== */
+@media (max-height: 800px) {
+    .game-container {
+        padding: 10px;
+        gap: 8px;
+    }
+    
+    .card {
+        width: 90px;
+        height: 120px;
+        min-width: 90px;
+        padding: 6px;
+    }
+    
+    .card-image {
+        font-size: 22px;
+    }
+    
+    .card-name {
+        font-size: 9px;
+    }
+    
+    .hand-area, .field-area {
+        min-height: 100px;
+        max-height: 150px;
+        padding: 8px;
+        gap: 6px;
+    }
+    
+    .player-info {
+        width: 160px;
+        min-width: 140px;
+        padding: 8px;
+        font-size: 13px;
+    }
+    
+    .health-bar {
+        height: 25px;
+    }
+    
+    .mana-crystal {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
+}
+
+@media (max-height: 700px) {
+    .game-container {
+        padding: 8px;
+        gap: 5px;
+    }
+    
+    .card {
+        width: 80px;
+        height: 105px;
+        min-width: 80px;
+        padding: 5px;
+    }
+    
+    .card-image {
+        font-size: 20px;
+    }
+    
+    .card-name {
+        font-size: 8px;
+    }
+    
+    .card-stats {
+        font-size: 10px;
+    }
+    
+    .card-description {
+        font-size: 7px;
+    }
+    
+    .hand-area, .field-area {
+        min-height: 90px;
+        max-height: 130px;
+        padding: 6px;
+        gap: 5px;
+    }
+    
+    .turn-indicator {
+        font-size: 16px;
+        padding: 5px 15px;
+    }
+    
+    .control-panel {
+        padding: 5px;
+    }
+    
+    button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
+
+/* Prevent horizontal scrolling on cards */
+.hand-area::-webkit-scrollbar,
+.field-area::-webkit-scrollbar {
+    height: 6px;
+}
+
+.hand-area::-webkit-scrollbar-track,
+.field-area::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.hand-area::-webkit-scrollbar-thumb,
+.field-area::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.hand-area::-webkit-scrollbar-thumb:hover,
+.field-area::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* Ensure cards don't break layout */
+.card.tapped {
+    transform: rotate(90deg);
+    opacity: 0.7;
+    margin: 0 10px;
+}
+
+/* Better handling of multiple cards */
+.hand-area {
+    justify-content: flex-start;
+}
+
+.field-area {
+    justify-content: flex-start;
+}
+
+/* Prevent selection of UI elements during gameplay */
+.game-container {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* ==================== Multiplayer Styles ==================== */
+
+.multiplayer-section {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 300px;
+}
+
+.multiplayer-section h3 {
+    margin-top: 0;
+    text-align: center;
+    color: #64ffda;
+    margin-bottom: 15px;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.status-indicator {
+    margin-right: 8px;
+    font-size: 12px;
+}
+
+.status-indicator.connected {
+    color: #4caf50;
+}
+
+.status-indicator.connecting {
+    color: #ff9800;
+    animation: pulse 1s infinite;
+}
+
+.status-indicator.disconnected {
+    color: #f44336;
+}
+
+.multiplayer-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.multiplayer-buttons button {
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.multiplayer-buttons button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+}
+
+.multiplayer-buttons button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.multiplayer-buttons .back-btn {
+    background: linear-gradient(135deg, #6c757d, #495057);
+    margin-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 12px;
+}
+
+.multiplayer-buttons .back-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5a6268, #343a40);
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.3);
+}
+
+.room-info {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.room-info h4 {
+    margin-top: 0;
+    color: #64ffda;
+    margin-bottom: 10px;
+}
+
+.room-info p {
+    margin-bottom: 10px;
+    font-size: 14px;
+    white-space: pre-line;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    color: white;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    color: white;
+}
+
+.room-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.room-join {
+    display: flex;
+    gap: 10px;
+}
+
+.room-join input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+.room-join button {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.modal-content > button {
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.matchmaking-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.matchmaking-content {
+    background: linear-gradient(135deg, #232526, #414345);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.spinner {
+    font-size: 48px;
+    animation: spin 2s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#matchmakingText {
+    margin: 20px 0 10px 0;
+    color: #64ffda;
+    font-size: 24px;
+}
+
+#matchmakingSubtext {
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
+}
+
+.matchmaking-content button {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    margin-top: 10px;
+}
+
+/* Multiplayer game UI adjustments */
+.game-container .player-info h3 {
+    font-size: 16px;
+}
+
+.multiplayer-indicator {
+    position: absolute;
+    top: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(100, 255, 218, 0.9);
+    color: #000;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 60;
+}
+
+/* Opponent name styling */
+.player-info h3.opponent {
+    color: #ff5722;
+}
+
+.player-info h3.local-player {
+    color: #4caf50;
+}
+
+/* Room ID display styling */
+.room-info code {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    color: #64ffda;
+    font-weight: bold;
+}
+
+/* Error popup styling */
+.multiplayer-error {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    z-index: 10000;
+    max-width: 300px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* ==================== Responsive Multiplayer ==================== */
+
+@media (max-width: 768px) {
+    .multiplayer-section {
+        width: 100%;
+        margin: 15px 0;
+        padding: 15px;
+    }
+    
+    .modal-content {
+        padding: 20px;
+        width: 95%;
+    }
+    
+    .matchmaking-content {
+        padding: 30px 20px;
+        width: 95%;
+    }
+    
+    .room-join {
+        flex-direction: column;
+    }
+    
+    .room-join input {
+        margin-bottom: 10px;
+    }
+    
+    #matchmakingText {
+        font-size: 20px;
+    }
+    
+    #matchmakingSubtext {
+        font-size: 14px;
+    }
+}
+
+@media (max-height: 600px) {
+    .multiplayer-section {
+        padding: 10px;
+        margin: 10px 0;
+    }
+    
+    .multiplayer-buttons {
+        gap: 8px;
+    }
+    
+    .multiplayer-buttons button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
+
+/* ==================== Deck Selection Styles ==================== */
+.deck-selection {
+    width: 80%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.deck-selection h2 {
+    text-align: center;
+    color: #ffd700;
+    margin-bottom: 20px;
+}
+
+.deck-selection-timer {
+    text-align: center;
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 15px;
+    padding: 10px;
+    background: rgba(255, 0, 0, 0.2);
+    border-radius: 5px;
+}
+
+.deck-selection-timer span {
+    font-weight: bold;
+}
+
+.deck-selection-status {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
+
+.player-status {
+    color: #fff;
+}
+
+.player-status span:last-child {
+    font-weight: bold;
+    color: #ffd700;
+}
+
+.player-status span:last-child.ready {
+    color: #4caf50;
+}
+
+.saved-decks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.deck-option {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    border: 2px solid #3498db;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.deck-option:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.5);
+    border-color: #5dade2;
+}
+
+.deck-option.selected {
+    border-color: #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+}
+
+.deck-option .deck-name {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.deck-option .deck-info {
+    font-size: 14px;
+    color: #bdc3c7;
+}
+
+.deck-selection-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.random-deck-btn, .cancel-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.random-deck-btn {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: white;
+}
+
+.random-deck-btn:hover {
+    background: linear-gradient(135deg, #e67e22, #d35400);
+}
+
+.cancel-btn {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+.cancel-btn:hover {
+    background: linear-gradient(135deg, #c0392b, #a93226);
+}
+
+/* ==================== v3.0 Color System Card Backgrounds ==================== */
+
+/* MONO-COLOR CARDS */
+.card.crimson,
+.card[data-color="crimson"] {
+    background: linear-gradient(135deg, #c31432, #240b36) !important;
+    border-color: #ff6b6b;
+}
+
+.card.azure,
+.card[data-color="azure"] {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364) !important;
+    border-color: #4fc3f7;
+}
+
+.card.verdant,
+.card[data-color="verdant"] {
+    background: linear-gradient(135deg, #134e0f, #0f7f1d) !important;
+    border-color: #66bb6a;
+}
+
+.card.umbral,
+.card[data-color="umbral"] {
+    background: linear-gradient(135deg, #1a0033, #3d0066) !important;
+    border-color: #9c27b0;
+}
+
+.card.colorless,
+.card[data-color="colorless"] {
+    background: linear-gradient(135deg, #424242, #616161) !important;
+    border-color: #9e9e9e;
+}
+
+/* DUAL-COLOR CARDS (Split Background) */
+.card.crimson-azure,
+.card[data-color="crimson-azure"] {
+    background: linear-gradient(135deg, #c31432 0%, #c31432 50%, #0f2027 50%, #2c5364 100%) !important;
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #ff6b6b, #4fc3f7) 1;
+}
+
+.card.crimson-verdant,
+.card[data-color="crimson-verdant"] {
+    background: linear-gradient(135deg, #c31432 0%, #c31432 50%, #134e0f 50%, #0f7f1d 100%) !important;
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #ff6b6b, #66bb6a) 1;
+}
+
+.card.crimson-umbral,
+.card[data-color="crimson-umbral"] {
+    background: linear-gradient(135deg, #c31432 0%, #c31432 50%, #1a0033 50%, #3d0066 100%) !important;
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #ff6b6b, #9c27b0) 1;
+}
+
+.card.azure-verdant,
+.card[data-color="azure-verdant"] {
+    background: linear-gradient(135deg, #0f2027 0%, #2c5364 50%, #134e0f 50%, #0f7f1d 100%) !important;
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #4fc3f7, #66bb6a) 1;
+}
+
+.card.azure-umbral,
+.card[data-color="azure-umbral"] {
+    background: linear-gradient(135deg, #0f2027 0%, #2c5364 50%, #1a0033 50%, #3d0066 100%) !important;
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #4fc3f7, #9c27b0) 1;
+}
+
+.card.verdant-umbral,
+.card[data-color="verdant-umbral"] {
+    background: linear-gradient(135deg, #134e0f 0%, #0f7f1d 50%, #1a0033 50%, #3d0066 100%) !important;
+    border: 2px solid;
+    border-image: linear-gradient(135deg, #66bb6a, #9c27b0) 1;
+}
+
+/* LEGENDARY YELLOW GLOW/BORDER - Overrides all color backgrounds */
+.card.legendary,
+.card[data-rarity="legendary"] {
+    border: 3px solid #ffd700 !important;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), 
+                0 0 50px rgba(255, 215, 0, 0.4),
+                inset 0 0 15px rgba(255, 215, 0, 0.3) !important;
+    animation: legendaryGlow 2s ease-in-out infinite;
+}
+
+@keyframes legendaryGlow {
+    0%, 100% { 
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.7), 
+                    0 0 50px rgba(255, 215, 0, 0.4),
+                    inset 0 0 15px rgba(255, 215, 0, 0.3);
+    }
+    50% { 
+        box-shadow: 0 0 35px rgba(255, 215, 0, 0.9), 
+                    0 0 70px rgba(255, 215, 0, 0.6),
+                    inset 0 0 20px rgba(255, 215, 0, 0.5);
+    }
+}
+
+/* SPLASH-FRIENDLY BADGE */
+.card.splash-friendly::before {
+    content: "✨";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    font-size: 16px;
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.8));
+    z-index: 5;
+}
+
+/* SPLASH-FRIENDLY WHITE BORDER */
+.card.splash-friendly {
+    border: 3px solid #ffffff !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6),
+                0 0 30px rgba(255, 255, 255, 0.3),
+                inset 0 0 10px rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Override for legendary splash cards - combine white + gold */
+.card.legendary.splash-friendly {
+    border: 3px solid #ffffff !important;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.7),
+                0 0 40px rgba(255, 215, 0, 0.5),
+                inset 0 0 15px rgba(255, 255, 255, 0.3) !important;
+}
+
+/* SPLASH BONUS ANIMATION */
+@keyframes splashFadeOut {
+    0% { 
+        opacity: 1; 
+        transform: translate(-50%, -50%) scale(1); 
+    }
+    100% { 
+        opacity: 0; 
+        transform: translate(-50%, -50%) scale(1.5); 
+    }
+}

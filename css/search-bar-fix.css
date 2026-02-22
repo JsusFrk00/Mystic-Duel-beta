@@ -1,0 +1,27 @@
+/* ========================================================================
+   SEARCH BAR LAYOUT FIX
+   ======================================================================== */
+/* Adjusts card grid height to account for search bar */
+
+/* Collection page - add extra space for search bar */
+.collection-container .card-grid {
+    max-height: calc(90vh - 260px) !important; /* Increased from 180px to 260px to account for search bar */
+}
+
+/* Ensure proper scrolling */
+#collectionGrid {
+    max-height: calc(90vh - 260px) !important;
+    overflow-y: auto !important;
+    padding-bottom: 40px !important;
+}
+
+/* Deck builder card collection area - add space for search bar */
+.card-collection .card-grid {
+    max-height: calc(90vh - 300px) !important; /* Account for search bar + filters */
+}
+
+#cardCollection {
+    max-height: calc(90vh - 300px) !important;
+    overflow-y: auto !important;
+    padding-bottom: 40px !important;
+}
